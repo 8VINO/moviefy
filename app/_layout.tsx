@@ -1,8 +1,9 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Redirect, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import 'react-native-reanimated';
+
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -24,7 +25,8 @@ export default function RootLayout() {
     
     <GluestackUIProvider mode="light">
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
+  <Stack>
+        <Stack.Screen name="login/index" options={{title: "Login",headerShown: false }}/>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
