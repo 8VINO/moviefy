@@ -3,9 +3,29 @@ import { View, Text, StyleSheet,ImageBackground } from "react-native";
 import { Input, InputField } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
 import { useRouter } from 'expo-router';
+import React,{ useState } from "react";
 const router = useRouter();
 export default function Login() {
-  
+  const [email,setEmail]=useState("")
+  const [password,setPassword]= useState("")
+  const [error,setError]=useState("")
+
+  const handleSubmit =() =>{
+    
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    setError("E-mail inválido. Por favor, verifique o formato");
+    return;
+  }
+  if (password.length < 6) {
+    setError("A senha deve ter pelo menos 6 caracteres");
+    return;
+  }
+
+  setError("");
+  router.push("/(tabs)");
+  return;
+  }
   return (
 <ImageBackground
     source={require('assets/images/backgroundLogin.jpg')}
@@ -20,33 +40,40 @@ export default function Login() {
           variant="outline"
           size="md"
           style={styles.input}
-          
-        >
+          >
           <InputField
             placeholder="Email"
             placeholderTextColor="#fff"
             style={{ color: "#fff" }}
-          />
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+            />
         </Input>
 
         <Input
           variant="outline"
           size="md"
           style={styles.input}
-        >
+          >
           <InputField
             placeholder="Senha"
             placeholderTextColor="#fff"
             style={{ color: "#fff" }}
+            secureTextEntry={true}
+            onChangeText={setPassword}
+            value={password}
             
-          />
+            />
         </Input>
+        {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
 
         <Button
         variant="solid"
         size="md"
         action="primary"
-        onPress={() => router.push("/(tabs)")}
+        onPress={handleSubmit}
+        
         >
           <ButtonText>Entrar</ButtonText>
         </Button>
