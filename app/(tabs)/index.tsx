@@ -1,75 +1,38 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import ContentSlider from '@/components/ContentSlider';
+import { View, Image, Text, ScrollView } from 'react-native';
 
 export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
+    <ScrollView>
+
+      <View className="w-full aspect-[2/3] mb-20 relative">
         <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+          source={require('@/assets/images/posters/penguin.jpg')}
+          className='max-w-full max-h-full z-0'
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+
+        <View className="absolute bottom-0 left-0 right-0 w-full h-[50px] bg-black/95" />
+        <View className="absolute bottom-0 left-0 right-0 w-full h-[100px] bg-black/45" />
+        <View className="absolute bottom-0 left-0 right-0 w-full h-[150px] bg-black/35" />
+        <View className="absolute bottom-0 left-0 right-0 w-full h-[250px] bg-black/25" />
+        <View className="absolute bottom-0 left-0 right-0 w-full h-[350px] bg-black/25" />
+        <View className="absolute bottom-0 left-0 right-0 w-full h-full bg-black/25" />
+
+        <Text className="absolute bottom-4 left-4 text-white font-bold text-2xl z-20">Pinguim 
+        </Text>
+      </View>
+
+
+      <View className='flex-column gap-8'>
+        <ContentSlider title='Em alta' content={['mr-robot', 'ouatih', 'harry-potter-1', 'peacemaker', 'inception', 'dexter', 'vi-e-o-resto']} />
+
+
+        <ContentSlider title='Filmes' content={['harry-potter-1', 'hangover', 'parasite', 'barbie', 'lion-king', 'inception', 'pirates', 'harry-potter-3']} />
+
+        <ContentSlider title='Series' content={['vi-e-o-resto', 'anne', 'dexter', 'mr-robot', 'peacemaker', 'penguin', 'the-office', 'riverdale', 'rick-and-morty']} />
+      </View>
+
+
+    </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});

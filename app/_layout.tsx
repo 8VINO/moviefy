@@ -23,7 +23,7 @@ export default function RootLayout() {
 
   return (
     
-    <GluestackUIProvider mode="light">
+    <GluestackUIProvider mode="dark">
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
   <Stack>
         <Stack.Screen name="login/index" options={{title: "Login",headerShown: false }}/>
