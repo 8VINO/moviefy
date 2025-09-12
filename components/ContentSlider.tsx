@@ -1,5 +1,7 @@
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { Text, Image, ScrollView, View } from 'react-native';
+import { Text, Image, ScrollView, View, Pressable } from 'react-native';
+import data from '@/assets/data/content.json'
 
 const imagesMap: Record<string, any> = {
   'anne': require('@/assets/images/posters/anne.webp'),
@@ -23,17 +25,24 @@ const imagesMap: Record<string, any> = {
   'vi-e-o-resto': require('@/assets/images/posters/vi-e-o-resto.webp'),
 }
 
-interface IProps{
-        title: string;
-        content: string[];
+interface IProps {
+  title: string;
+  content: string[];
 }
 
+type DataType = typeof data;
+
 export default function ContentSlider({ title, content }: IProps) {
+  const router = useRouter();
+
+
+
+
   return (
     <View>
       <Text className="text-white font-bold text-lg px-2">{title}</Text>
 
-      
+
       <View style={{ height: 210 }} className='mt-2'>
         <ScrollView
           horizontal
@@ -43,15 +52,22 @@ export default function ContentSlider({ title, content }: IProps) {
         >
           {content.map((item, index) => {
             const imageSource = imagesMap[item];
+
+            const filmeSerie = data[item as keyof DataType];
+
             if (!imageSource) return null;
 
             return (
-              <Image
-                key={index}
-                source={imageSource}
-                style={{ width: 140, height: '100%', borderRadius: 8 }}
-                resizeMode="cover"
-              />
+              <Pressable key={index} onPress={() => router.push({
+                pathname: "/details",
+                params: { filmeSerie: JSON.stringify(filmeSerie), itemKey: item },
+              })}>
+                <Image
+                  source={imageSource}
+                  style={{ width: 140, height: '100%', borderRadius: 8 }}
+                  resizeMode="cover"
+                />
+              </Pressable>
             );
           })}
         </ScrollView>
