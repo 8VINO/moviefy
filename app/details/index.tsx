@@ -39,7 +39,7 @@ export default function Details() {
       <ScrollView className="flex-1">
         
         <Image
-          source={require('assets/images/mrRobot.jpg')}
+          source={require('@/assets/images/posters/mr-robot.jpeg')}
           style={styles.poster}
           className="mx-auto"
           resizeMode="cover"

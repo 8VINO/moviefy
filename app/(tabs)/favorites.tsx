@@ -1,21 +1,23 @@
 import { View, Text, Image, FlatList, StyleSheet, Dimensions } from "react-native";
 
 const films = [
-  { id: "1", name: "Coringa", src: require("assets/images/mrRobot.jpg") },
-  { id: "2", name: "Dexter", src: require("assets/images/mrRobot.jpg") },
-  { id: "3", name: "Sobrenatural", src: require("assets/images/mrRobot.jpg") },
-  { id: "4", name: "Shrek", src: require("assets/images/mrRobot.jpg") },
-  { id: "5", name: "Coringa", src: require("assets/images/mrRobot.jpg") },
-  { id: "6", name: "Dexter", src: require("assets/images/mrRobot.jpg") },
-  { id: "7", name: "Sobrenatural", src: require("assets/images/mrRobot.jpg") },
-  { id: "8", name: "Shrek", src: require("assets/images/mrRobot.jpg") },
+  { id: "1", name: "Mr.Robot", src: require("@/assets/images/posters/mr-robot.jpeg") },
+  { id: "2", name: "Anne with an E", src: require("@/assets/images/posters/anne.webp") },
+  { id: "3", name: "Pinguim", src: require("@/assets/images/posters/penguin.jpg") },
+  { id: "4", name: "A origem", src: require("@/assets/images/posters/inception.webp") },
+  { id: "5", name: "The Office", src: require("@/assets/images/posters/the-office.webp") },
+  { id: "6", name: "Dexter", src: require("@/assets/images/posters/dexter.webp") },
+  { id: "7", name: "Riverdale", src: require("@/assets/images/posters/riverdale.webp") },
+  { id: "8", name: "Parasita", src: require("@/assets/images/posters/parasite.webp") },
+  { id: "8", name: "Rei Leão", src: require("@/assets/images/posters/lion-king.webp") },
+  { id: "8", name: "Arcane", src: require("@/assets/images/posters/vi-e-o-resto.webp") },
 ];
 
 const screenWidth = Dimensions.get("window").width;
 const marginItem = 16;
 const widthItem = (screenWidth - marginItem * 3) / 2; 
 
-export default function Favoritos() {
+export default function Favorites() {
   return (
     <View className="flex-1 p-2 mt-2">
       <Text style={styles.title}>Favoritos</Text>
