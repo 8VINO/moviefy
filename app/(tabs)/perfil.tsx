@@ -18,7 +18,7 @@ export default function PerfilScreen() {
     const [imageUri, setImageUri] = useState<string | null>(null);
     const [nome, setNome] = useState<string>('Bryce Sardothien');
     const [email, setEmail] = useState<string>('sardothien.bryce@mail.com');
-    const [senha, setSenha] = useState<string>('dfendyrqmleumamou');
+    const [senha, setSenha] = useState<string>('dfendyrqsdsdrfd');
     const [showModal, setShowModal] = useState<boolean>(false);
 
 

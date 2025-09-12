@@ -9,8 +9,8 @@ const films = [
   { id: "6", name: "Dexter", src: require("@/assets/images/posters/dexter.webp") },
   { id: "7", name: "Riverdale", src: require("@/assets/images/posters/riverdale.webp") },
   { id: "8", name: "Parasita", src: require("@/assets/images/posters/parasite.webp") },
-  { id: "8", name: "Rei Leão", src: require("@/assets/images/posters/lion-king.webp") },
-  { id: "8", name: "Arcane", src: require("@/assets/images/posters/vi-e-o-resto.webp") },
+  { id: "9", name: "Rei Leão", src: require("@/assets/images/posters/lion-king.webp") },
+  { id: "10", name: "Arcane", src: require("@/assets/images/posters/vi-e-o-resto.webp") },
 ];
 
 const screenWidth = Dimensions.get("window").width;
@@ -20,8 +20,6 @@ const widthItem = (screenWidth - marginItem * 3) / 2;
 export default function Favorites() {
   return (
     <View className="flex-1 p-2 mt-2">
-      <Text style={styles.title}>Favoritos</Text>
-
       <FlatList
         data={films}
         keyExtractor={(item) => item.id}
@@ -32,7 +30,9 @@ export default function Favorites() {
             <Text style={styles.name}>{item.name}</Text>
           </View>
         )}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        ListHeaderComponent={
+          <Text style={styles.title}>Favoritos</Text>
+        }
       />
     </View>
   );
@@ -44,15 +44,17 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     marginBottom: 16,
-    marginTop:16
+    marginTop: 16,
   },
   item: {
     margin: marginItem / 2,
     alignItems: "center",
+    padding:14
   },
   poster: {
     width: "100%",
     height: 220,
+    
   },
   name: {
     color: "#fff",
