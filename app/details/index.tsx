@@ -56,7 +56,7 @@ export default function Details() {
       render: () => (
         <Toast>
           <ToastDescription>
-            Filme adicionado aos favoritos!
+            Conteúdo adicionado aos favoritos!
           </ToastDescription>
         </Toast>
       ),
@@ -77,11 +77,11 @@ export default function Details() {
         />
 
         <View className="p-4">
-          <Text className="text-white text-2xl font-bold mb-1">{content.name}</Text>
+          <Text className="text-white text-2xl font-bold mb-1">{content.name ? content.name : content.title}</Text>
           <Text className="text-gray-400 mb-2">{getGeneros(content, generos).join(", ")}</Text>
 
           <View className="flex-row items-center mb-4 ">
-            <Text className="text-gray-400 mr-2" >2015</Text>
+            <Text className="text-gray-400 mr-2" >{content.year}</Text>
 
             <View className="bg-gray-700 px-2 py-0.5 rounded-full mr-2">
               <Text className="text-white text-xs ">A16</Text>

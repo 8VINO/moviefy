@@ -64,5 +64,48 @@
         "origin_country": [
             "US"
         ]
-    }
+    },
+    "lion-king": {
+            "adult": false,
+            "backdrop_path": "/1w8kutrRucTd3wlYyu5QlUDMiG1.jpg",
+            "genre_ids": [
+                12,
+                10751,
+                16
+            ],
+            "id": 762509,
+            "original_language": "en",
+            "original_title": "Mufasa: The Lion King",
+            "overview": "Acompanhe a história épica da ascensão improvável do amado rei das Terras do Reino. Órfão e sozinho, Mufasa se perde até encontrar Taka, herdeiro de uma linhagem real. Isso dá início a uma jornada épica que testa os laços entre os dois enquanto enfrentam um inimigo mortal.",
+            "popularity": 18.3481,
+            "poster_path": "/iMVuv6Gz5fj7vZ51IjRF3AiW87y.jpg",
+            "release_date": "2024-12-18",
+            "title": "Mufasa: O Rei Leão",
+            "video": false,
+            "vote_average": 7.369,
+            "vote_count": 2349
+        },
+        "penguin": {
+            "adult": false,
+            "backdrop_path": "/qq36sU5xH581RiNEkookMQ9D7yp.jpg",
+            "id": 194764,
+            "name": "Pinguim",
+            "original_name": "The Penguin",
+            "overview": "Após a queda dos Carmines, Oswald “Oz” Cobb está pronto para assumir o controle de Gotham e dar à sua mãe a vida que ele sempre lhe prometeu. Mas primeiro, ele terá de enfrentar inimigos novos e antigos, além do seu tão odiado apelido – O Pinguim – que não tornará o caminho deste gangster tão fácil.",
+            "poster_path": "/pPUNmQZUh7h6w2423VvtzUeg1LD.jpg",
+            "media_type": "tv",
+            "original_language": "en",
+            "genre_ids": [
+                18,
+                80
+            ],
+            "popularity": 11.6352,
+            "first_air_date": "2024-09-19",
+            "vote_average": 8.404,
+            "vote_count": 1074,
+            "origin_country": [
+                "US"
+            ]
+        }
+
 }

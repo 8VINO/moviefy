@@ -1,13 +1,19 @@
 import ContentSlider from '@/components/ContentSlider';
 import { View, Image, Text, ScrollView,Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
+import data from '@/assets/data/content.json';
+
+type DataType = typeof data;
 
 export default function HomeScreen() {
    const router = useRouter();
   return (
      <ScrollView>
 
-      <Pressable onPress={() => router.push('/details')}>
+      <Pressable onPress={() => router.push({
+                pathname: "/details",
+                params: { filmeSerie: JSON.stringify(data["mr-robot"]), itemKey: "mr-robot" },
+              })}>
         <View className="w-full aspect-[2/3] mb-20 relative">
           <Image
             source={require('@/assets/images/posters/mr-robot.jpeg')}
