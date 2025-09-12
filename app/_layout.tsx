@@ -23,11 +23,13 @@ export default function RootLayout() {
 
   return (
     
-    <GluestackUIProvider mode="light">
+    <GluestackUIProvider mode="dark">
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
   <Stack>
         <Stack.Screen name="login/index" options={{title: "Login",headerShown: false }}/>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="details/index" options={{title: "Details",headerShown: false }}/>
+        <Stack.Screen name="play/index" options={{title: "Play",headerShown: false }}/>
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
