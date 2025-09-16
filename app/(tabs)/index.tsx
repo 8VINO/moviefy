@@ -1,11 +1,27 @@
 import ContentSlider from '@/components/ContentSlider';
-import { View, Image, Text, ScrollView,Pressable } from 'react-native';
+import { View, Image, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useEffect } from 'react';
+import RequestGET from '@/api/GET';
 
 export default function HomeScreen() {
-   const router = useRouter();
+  const router = useRouter();
+
+
+  useEffect(() => {
+    async function fetchData() {
+      const res = await RequestGET('/trending/movie/week?language=pt-BR')
+
+      const resp = await res.json();
+
+      console.log(resp)
+    }
+
+    fetchData()
+  }, [])
+
   return (
-     <ScrollView>
+    <ScrollView>
 
       <Pressable onPress={() => router.push('/details')}>
         <View className="w-full aspect-[2/3] mb-20 relative">
