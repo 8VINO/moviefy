@@ -8,8 +8,38 @@ import {
 } from '@/components/ui/toast';
 import { Linking } from "react-native";
 import { useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
+import generos from '@/assets/data/generos.json';
+import getGeneros from "@/components/utils/getGeneros";
+
+
+
+const imagesMap: Record<string, any> = {
+  'anne': require('@/assets/images/posters/anne.webp'),
+  'barbie': require('@/assets/images/posters/barbie.webp'),
+  'dexter': require('@/assets/images/posters/dexter.webp'),
+  'hangover': require('@/assets/images/posters/hangover.webp'),
+  'harry-potter-1': require('@/assets/images/posters/harry-potter-1.webp'),
+  'harry-potter-3': require('@/assets/images/posters/harry-potter-3.webp'),
+  'inception': require('@/assets/images/posters/inception.webp'),
+  'lion-king': require('@/assets/images/posters/lion-king.webp'),
+  'mr-robot': require('@/assets/images/posters/mr-robot.jpeg'),
+  'ouatih': require('@/assets/images/posters/ouatih.jpeg'),
+  'parasite': require('@/assets/images/posters/parasite.webp'),
+  'peacemaker': require('@/assets/images/posters/peacemaker.webp'),
+  'penguin': require('@/assets/images/posters/penguin.jpg'),
+  'pirates': require('@/assets/images/posters/pirates.webp'),
+  'rick-and-morty': require('@/assets/images/posters/rick-and-morty.webp'),
+  'riverdale': require('@/assets/images/posters/riverdale.webp'),
+  'sopranos': require('@/assets/images/posters/sopranos.webp'),
+  'the-office': require('@/assets/images/posters/the-office.webp'),
+  'vi-e-o-resto': require('@/assets/images/posters/vi-e-o-resto.webp'),
+}
+
 
 export default function Details() {
+    const { filmeSerie, itemKey } = useLocalSearchParams();
+    const content = JSON.parse(String(filmeSerie));
     
     const router = useRouter();
     const toast = useToast();
@@ -26,7 +56,7 @@ export default function Details() {
       render: () => (
         <Toast>
           <ToastDescription>
-            Filme adicionado aos favoritos!
+            Conteúdo adicionado aos favoritos!
           </ToastDescription>
         </Toast>
       ),
@@ -39,7 +69,7 @@ export default function Details() {
       <ScrollView className="flex-1">
         
         <Image
-          source={require('@/assets/images/posters/mr-robot.jpeg')}
+          source={imagesMap[String(itemKey)]}
           style={styles.poster}
           className="mx-auto"
           resizeMode="cover"
@@ -47,11 +77,11 @@ export default function Details() {
         />
 
         <View className="p-4">
-          <Text className="text-white text-2xl font-bold mb-1">Mr.Robot</Text>
-          <Text className="text-gray-400 mb-2">Crime, Drama</Text>
+          <Text className="text-white text-2xl font-bold mb-1">{content.name ? content.name : content.title}</Text>
+          <Text className="text-gray-400 mb-2">{getGeneros(content, generos).join(", ")}</Text>
 
           <View className="flex-row items-center mb-4 ">
-            <Text className="text-gray-400 mr-2" >2015</Text>
+            <Text className="text-gray-400 mr-2" >{content.year}</Text>
 
             <View className="bg-gray-700 px-2 py-0.5 rounded-full mr-2">
               <Text className="text-white text-xs ">A16</Text>
@@ -59,12 +89,12 @@ export default function Details() {
             
             <View className="flex-row items-center">
               <FontAwesome name="star" size={14} color="yellow" />
-              <Text className="text-white ml-1">8.3</Text>
+              <Text className="text-white ml-1">{content.vote_average}</Text>
             </View>
           </View>
 
           <Text className="text-gray-300 leading-6">
-            Elliot é um jovem programador que sofre de uma desordem que o torna anti-social. Acreditando que a única forma de se conectar com as pessoas é hackeando suas vidas, ele alia seu conhecimento ao fato de trabalhar em uma empresa de segurança online para proteger aqueles que ele ama daqueles que tentam, de alguma forma, prejudicá-los...
+            {content.overview}
           </Text>
         </View>
         

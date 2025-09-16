@@ -1,0 +1,111 @@
+{
+    "barbie": {
+        "adult": false,
+        "backdrop_path": "/ctMserH8g2SeOAnCw5gFjdQF8mo.jpg",
+        "id": 346698,
+        "title": "Barbie",
+        "original_title": "Barbie",
+        "overview": "No mundo mágico das Barbies, \"Barbieland\", uma das bonecas começa a perceber que não se encaixa como as outras. Depois de ser expulsa, ela parte para uma aventura no \"mundo real\", onde descobre que a beleza está no interior de cada um.",
+        "poster_path": "/yRRuLt7sMBEQkHsd1S3KaaofZn7.jpg",
+        "media_type": "movie",
+        "original_language": "en",
+        "genre_ids": [
+            35,
+            12
+        ],
+        "popularity": 18.1366,
+        "release_date": "2023-07-19",
+        "video": false,
+        "vote_average": 6.958,
+        "vote_count": 10254
+    },
+    "mr-robot": {
+        "adult": false,
+        "backdrop_path": "/uJUe985oIuRiD3hmHQYskIMc2WU.jpg",
+        "id": 62560,
+        "name": "Mr. Robot",
+        "original_name": "Mr. Robot",
+        "overview": "Elliot é um jovem programador que sofre de uma desordem que o torna anti-social. Acreditando que a única forma de se conectar com as pessoas é hackeando suas vidas, ele alia seu conhecimento ao fato de trabalhar em uma empresa de segurança online para proteger aqueles que ele ama daqueles que tentam, de alguma forma, prejudicá-los. Suas atividades chamam a atenção de Mr. Robot, um misterioso anarquista que convida Elliot a fazer parte de uma organização que atua na ilegalidade com o objetivo de derrubar as corporações americanas.",
+        "poster_path": "/1uS9tYSYXU5jshLx2WlnOLZrMgD.jpg",
+        "media_type": "tv",
+        "original_language": "en",
+        "genre_ids": [
+            80,
+            18
+        ],
+        "popularity": 18.7304,
+        "first_air_date": "2015-06-24",
+        "vote_average": 8.3,
+        "vote_count": 4956,
+        "origin_country": [
+            "US"
+        ]
+    },
+    "vi-e-o-resto": {
+        "adult": false,
+        "backdrop_path": "/sYXLeu5usz6yEz0k00FYvtEdodD.jpg",
+        "id": 94605,
+        "name": "Arcane",
+        "original_name": "Arcane",
+        "overview": "Em meio ao conflito entre as cidades-gêmeas de Piltover e Zaun, duas irmãs lutam em lados opostos de uma guerra entre tecnologias mágicas e convicções incompatíveis.",
+        "poster_path": "/m3Tzf6k537PnhOEwaSRNCSxedLS.jpg",
+        "media_type": "tv",
+        "original_language": "en",
+        "genre_ids": [
+            16,
+            10765,
+            18,
+            10759
+        ],
+        "popularity": 19.4575,
+        "first_air_date": "2021-11-06",
+        "vote_average": 8.8,
+        "vote_count": 5355,
+        "origin_country": [
+            "US"
+        ]
+    },
+    "lion-king": {
+            "adult": false,
+            "backdrop_path": "/1w8kutrRucTd3wlYyu5QlUDMiG1.jpg",
+            "genre_ids": [
+                12,
+                10751,
+                16
+            ],
+            "id": 762509,
+            "original_language": "en",
+            "original_title": "Mufasa: The Lion King",
+            "overview": "Acompanhe a história épica da ascensão improvável do amado rei das Terras do Reino. Órfão e sozinho, Mufasa se perde até encontrar Taka, herdeiro de uma linhagem real. Isso dá início a uma jornada épica que testa os laços entre os dois enquanto enfrentam um inimigo mortal.",
+            "popularity": 18.3481,
+            "poster_path": "/iMVuv6Gz5fj7vZ51IjRF3AiW87y.jpg",
+            "release_date": "2024-12-18",
+            "title": "Mufasa: O Rei Leão",
+            "video": false,
+            "vote_average": 7.369,
+            "vote_count": 2349
+        },
+        "penguin": {
+            "adult": false,
+            "backdrop_path": "/qq36sU5xH581RiNEkookMQ9D7yp.jpg",
+            "id": 194764,
+            "name": "Pinguim",
+            "original_name": "The Penguin",
+            "overview": "Após a queda dos Carmines, Oswald “Oz” Cobb está pronto para assumir o controle de Gotham e dar à sua mãe a vida que ele sempre lhe prometeu. Mas primeiro, ele terá de enfrentar inimigos novos e antigos, além do seu tão odiado apelido – O Pinguim – que não tornará o caminho deste gangster tão fácil.",
+            "poster_path": "/pPUNmQZUh7h6w2423VvtzUeg1LD.jpg",
+            "media_type": "tv",
+            "original_language": "en",
+            "genre_ids": [
+                18,
+                80
+            ],
+            "popularity": 11.6352,
+            "first_air_date": "2024-09-19",
+            "vote_average": 8.404,
+            "vote_count": 1074,
+            "origin_country": [
+                "US"
+            ]
+        }
+
+}
