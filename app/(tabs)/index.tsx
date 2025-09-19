@@ -1,22 +1,39 @@
 import ContentSlider from '@/components/ContentSlider';
-import { View, Image, Text, ScrollView,Pressable } from 'react-native';
+import { View, Image, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 import data from '@/assets/data/content.json';
+import { img_route } from '@/routes/api/api.route';
+import { useEffect, useState } from 'react';
+import getData from '@/routes/api/GET';
+import IMovie from '@/interfaces/Movie';
 
 type DataType = typeof data;
 
 export default function HomeScreen() {
-   const router = useRouter();
+  const router = useRouter();
+  const [mostViewedMovies, setMostViewedMovies] = useState<IMovie[]>({} as IMovie[]);
+
+  useEffect(() => {
+    async () => {
+      const res = await getData('/movie/popular?language=pt-BR&page=1&region=BRA');
+      const resp = await res.json();
+      console.log(">>>>", resp)
+      setMostViewedMovies(resp.results)
+    }
+
+    
+  }, [])
+
   return (
-     <ScrollView>
+    <ScrollView>
 
       <Pressable onPress={() => router.push({
-                pathname: "/details",
-                params: { filmeSerie: JSON.stringify(data["mr-robot"]), itemKey: "mr-robot" },
-              })}>
+        pathname: "/details",
+        params: { filmeSerie: JSON.stringify(data["mr-robot"]), itemKey: "mr-robot" },
+      })}>
         <View className="w-full aspect-[2/3] mb-20 relative">
           <Image
-            source={require('@/assets/images/posters/mr-robot.jpeg')}
+            source={{uri: `${img_route}/original${mostViewedMovies[0].poster_path}`}}
             className='max-w-full max-h-full z-0'
           />
 
