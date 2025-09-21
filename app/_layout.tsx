@@ -28,7 +28,8 @@ export default function RootLayout() {
   <Stack>
         <Stack.Screen name="login/index" options={{title: "Login",headerShown: false }}/>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="details/index" options={{title: "Details",headerShown: false }}/>
+        <Stack.Screen name="detailsMovie/index" options={{title: "Details Movie",headerShown: false }}/>
+        <Stack.Screen name="detailsSerie/index" options={{title: "Details Serie",headerShown: false }}/>
         <Stack.Screen name="play/index" options={{title: "Play",headerShown: false }}/>
         <Stack.Screen name="+not-found" />
       </Stack>

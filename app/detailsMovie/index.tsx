@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView, StyleSheet  } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import { Button, ButtonText } from '@/components/ui/button';
 import {
@@ -8,41 +8,27 @@ import {
 } from '@/components/ui/toast';
 import { Linking } from "react-native";
 import { useRouter } from "expo-router";
-import { useLocalSearchParams } from "expo-router";
-import generos from '@/assets/data/generos.json';
-import getGeneros from "@/components/utils/getGeneros";
+import { img_route } from "@/routes/api/api.route";
+import { api_route } from "@/routes/api/api.route";
+import { Image } from "@/components/ui/image";
+import { useEffect, useState } from "react";
 
 
-
-const imagesMap: Record<string, any> = {
-  'anne': require('@/assets/images/posters/anne.webp'),
-  'barbie': require('@/assets/images/posters/barbie.webp'),
-  'dexter': require('@/assets/images/posters/dexter.webp'),
-  'hangover': require('@/assets/images/posters/hangover.webp'),
-  'harry-potter-1': require('@/assets/images/posters/harry-potter-1.webp'),
-  'harry-potter-3': require('@/assets/images/posters/harry-potter-3.webp'),
-  'inception': require('@/assets/images/posters/inception.webp'),
-  'lion-king': require('@/assets/images/posters/lion-king.webp'),
-  'mr-robot': require('@/assets/images/posters/mr-robot.jpeg'),
-  'ouatih': require('@/assets/images/posters/ouatih.jpeg'),
-  'parasite': require('@/assets/images/posters/parasite.webp'),
-  'peacemaker': require('@/assets/images/posters/peacemaker.webp'),
-  'penguin': require('@/assets/images/posters/penguin.jpg'),
-  'pirates': require('@/assets/images/posters/pirates.webp'),
-  'rick-and-morty': require('@/assets/images/posters/rick-and-morty.webp'),
-  'riverdale': require('@/assets/images/posters/riverdale.webp'),
-  'sopranos': require('@/assets/images/posters/sopranos.webp'),
-  'the-office': require('@/assets/images/posters/the-office.webp'),
-  'vi-e-o-resto': require('@/assets/images/posters/vi-e-o-resto.webp'),
-}
-
-
-export default function Details() {
-    const { filmeSerie, itemKey } = useLocalSearchParams();
-    const content = JSON.parse(String(filmeSerie));
+export default function DetailsMovie({idMovie}: {idMovie:number}) {
+    const [content,setContent]=useState<any>(null);
     
     const router = useRouter();
     const toast = useToast();
+
+    useEffect(()=>{
+      fetch(`${api_route}/movie/1311031`)
+      .then(res=>res.json())
+      .then(json=>setContent(json))
+      .catch(err=>console.error(err))
+    
+      
+    }
+     ,[])
 
     const handleOpenTrailer = () => {
     Linking.openURL("https://www.youtube.com/watch?v=xIBiJ_SzJTA")
@@ -51,10 +37,11 @@ export default function Details() {
   
     const handleAddFavorite = () => {
     toast.show({
+      id: "favorite-toast",
       placement: "top", 
       duration: 2000,   
       render: () => (
-        <Toast>
+        <Toast className="mt-14">
           <ToastDescription>
             Conteúdo adicionado aos favoritos!
           </ToastDescription>
@@ -63,25 +50,26 @@ export default function Details() {
     });
   }
   return (
-    <View className="flex-1 bg-[#111111]">
-      <View className="mx-auto"></View>
+      
+      <ScrollView className="flex-1 ">
+        <View className="h-64 mt-2">
     
-      <ScrollView className="flex-1">
         
         <Image
-          source={imagesMap[String(itemKey)]}
-          style={styles.poster}
-          className="mx-auto"
+          source={`${img_route}/original${content?.poster_path}`}
+          className="w-full h-full "
           resizeMode="cover"
-        
-        />
+          accessibilityLabel="Pôster do filme"
+          
+          />
+          </View>
 
         <View className="p-4">
-          <Text className="text-white text-2xl font-bold mb-1">{content.name ? content.name : content.title}</Text>
-          <Text className="text-gray-400 mb-2">{getGeneros(content, generos).join(", ")}</Text>
+          <Text className="text-white text-2xl font-bold mb-1">{content?.title}</Text>
+          <Text className="text-gray-400 mb-2">{content?.genres?.map((g:any) =>g.name).join(", ")}</Text>
 
           <View className="flex-row items-center mb-4 ">
-            <Text className="text-gray-400 mr-2" >{content.year}</Text>
+            <Text className="text-gray-400 mr-2" >{content?.release_date?.substring(0,4)}</Text>
 
             <View className="bg-gray-700 px-2 py-0.5 rounded-full mr-2">
               <Text className="text-white text-xs ">A16</Text>
@@ -89,12 +77,12 @@ export default function Details() {
             
             <View className="flex-row items-center">
               <FontAwesome name="star" size={14} color="yellow" />
-              <Text className="text-white ml-1">{content.vote_average}</Text>
+              <Text className="text-white ml-1">{content?.vote_average != null ? content.vote_average.toFixed(1) : '—'}</Text>
             </View>
           </View>
 
-          <Text className="text-gray-300 leading-6">
-            {content.overview}
+          <Text className="text-gray-300 leading-6 text-justify">
+            {content?.overview}
           </Text>
         </View>
         
@@ -143,18 +131,9 @@ export default function Details() {
         </View>
 
       </ScrollView>
+     
 
 
-    </View>
   );
 
 }
-  const styles=StyleSheet.create({
-    poster:{
-        width: "100%",
-        height: 200
-    },
-    button:{
-        backgroundColor: "#FFD700"
-    }
-  })
