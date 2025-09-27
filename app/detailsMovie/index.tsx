@@ -1,4 +1,5 @@
 import { View, Text, ScrollView } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 import { FontAwesome } from '@expo/vector-icons';
 import { Button, ButtonText } from '@/components/ui/button';
 import {
@@ -14,24 +15,25 @@ import { Image } from "@/components/ui/image";
 import { useEffect, useState } from "react";
 
 
-export default function DetailsMovie({idMovie}: {idMovie:number}) {
+export default function DetailsMovie() {
+    const { id } = useLocalSearchParams();
     const [content,setContent]=useState<any>(null);
-    const [trailerLink, setTrailerLink]=useState<any>(null);
+    const [trailerLink, setTrailerLink]=useState<any>(null)
+    const [minimumAge,setMinimumAge]=useState<any>(null);
     
     const router = useRouter();
     const toast = useToast();
 
     useEffect(()=>{
-      fetch(`${api_route}/movie/1311031?language=pt-BR`)
+      
+      //general movie data
+      fetch(`${api_route}/movie/${id}?language=pt-BR`)
       .then(res=>res.json())
       .then(json=>setContent(json))
       .catch(err=>console.error(err))
     
-    }
-     ,[])
-
-    useEffect(()=>{
-      fetch(`${api_route}/movie/1311031/videos?language=pt-BR`)
+      //trailer
+      fetch(`${api_route}/movie/${id}/videos?language=pt-BR`)
       .then(res=>res.json())
       .then(json=>{
         const trailer = json.results.find(
@@ -41,9 +43,20 @@ export default function DetailsMovie({idMovie}: {idMovie:number}) {
         
       })
       .catch(err=>console.error(err))
+      //minimum age
+      fetch(`${api_route}/movie/${id}/release_dates`)
+      .then(res=>res.json())
+      .then(json=>{
+        const releaseDateBR = json.results.find((item:any)=>item.iso_3166_1==="BR");
+        if(releaseDateBR?.release_dates?.length){
+          const latest = releaseDateBR.release_dates[releaseDateBR.release_dates.length-1]
+          setMinimumAge(latest.certification || null)
+        }
+      })
     }
      ,[])
 
+   
     const handleOpenTrailer = () => {
     Linking.openURL(`https://www.youtube.com/watch?v=${trailerLink}`)
       .catch(err => console.error("Erro ao abrir link:", err));
@@ -73,7 +86,7 @@ export default function DetailsMovie({idMovie}: {idMovie:number}) {
           source={`${img_route}/original${content?.poster_path}`}
           className="w-full h-full "
           resizeMode="cover"
-          accessibilityLabel="Pôster do filme"
+          alt="Pôster do filme"
           
           />
           </View>
@@ -86,7 +99,7 @@ export default function DetailsMovie({idMovie}: {idMovie:number}) {
             <Text className="text-gray-400 mr-2" >{content?.release_date?.substring(0,4)}</Text>
 
             <View className="bg-gray-700 px-2 py-0.5 rounded-full mr-2">
-              <Text className="text-white text-xs ">A16</Text>
+              <Text className="text-white text-xs ">A{minimumAge}</Text>
             </View>
             
             <View className="flex-row items-center">
