@@ -1,27 +1,43 @@
 import ContentSlider from '@/components/ContentSlider';
-import { View, Text, ScrollView,Pressable, Image } from 'react-native';
+import { View, Image, Text, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
-import data from '@/assets/data/content.json';
-
-
-type DataType = typeof data;
+import { img_route } from '@/routes/api/api.route';
+import { useEffect, useState } from 'react';
+import getData from '@/routes/api/GET';
+import IMovie from '@/interfaces/Movie';
 
 export default function HomeScreen() {
-   const router = useRouter();
+  const router = useRouter();
+  const [mostViewedMovies, setMostViewedMovies] = useState<IMovie[]>([]);
+
+
+  useEffect(() => {
+    const loadData = async () => {
+      const res = await getData('/trending/all/week?language=pt-BR');
+      const resp = await res.json();
+
+      setMostViewedMovies(resp.results)
+    }
+
+    loadData()
+  }, [])
+
   return (
-     <ScrollView>
+    <ScrollView>
 
       <Pressable onPress={() => router.push({
-                pathname: "/detailsMovie"
-                
-              })}>
+        pathname: `${mostViewedMovies[0].title ? "/detailsMovie": "/detailsSerie"}`,
+        params: { id: mostViewedMovies[0].id },
+      })}>
         <View className="w-full aspect-[2/3] mb-20 relative">
-          <Image
-            source={{
-              uri: "http://10.0.0.185:8000/img?url=/original/c55sXCaQBj3vuHqZe62tv90xCQS.jpg",
-            }}
-            className='w-full h-full z-0'
-        />
+          {mostViewedMovies.length > 0 && mostViewedMovies[0]?.poster_path && (
+            <Image
+              source={{ uri: `${img_route}/original${mostViewedMovies[0].poster_path}` }}
+              style={{ width: '100%', height: '100%' }}
+              resizeMode="cover"
+            />
+          )}
+
 
           <View className="absolute bottom-0 left-0 right-0 w-full h-[50px] bg-black/95" />
           <View className="absolute bottom-0 left-0 right-0 w-full h-[100px] bg-black/45" />
@@ -31,15 +47,15 @@ export default function HomeScreen() {
           <View className="absolute bottom-0 left-0 right-0 w-full h-full bg-black/25" />
 
           <Text className="absolute bottom-4 left-4 text-white font-bold text-2xl z-20">
-            Demon Slayer
+            {mostViewedMovies[0]?.title}
           </Text>
         </View>
       </Pressable>
 
       <View className='flex-column gap-8'>
-        <ContentSlider title='Em alta' content={['mr-robot', 'ouatih', 'harry-potter-1', 'peacemaker', 'inception', 'dexter', 'vi-e-o-resto']} />
-        <ContentSlider title='Filmes' content={['harry-potter-1', 'hangover', 'parasite', 'barbie', 'lion-king', 'inception', 'pirates', 'harry-potter-3']} />
-        <ContentSlider title='Series' content={['vi-e-o-resto', 'anne', 'dexter', 'mr-robot', 'peacemaker', 'penguin', 'the-office', 'riverdale', 'rick-and-morty']} />
+        <ContentSlider title='Em alta' url='/trending/all/week?language=pt-BR' />
+        <ContentSlider title='Filmes' url='/movie/popular?language=pt-BR&page=1' />
+        <ContentSlider title='Series' url='/tv/popular?language=pt-BR&page=1' />
       </View>
 
     </ScrollView>

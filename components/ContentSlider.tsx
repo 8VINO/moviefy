@@ -1,42 +1,32 @@
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, Image, ScrollView, View, Pressable } from 'react-native';
-import data from '@/assets/data/content.json'
+import IMovie from '@/interfaces/Movie';
+import { img_route } from '@/routes/api/api.route';
+import getData from '@/routes/api/GET';
 
-const imagesMap: Record<string, any> = {
-  'anne': require('@/assets/images/posters/anne.webp'),
-  'barbie': require('@/assets/images/posters/barbie.webp'),
-  'dexter': require('@/assets/images/posters/dexter.webp'),
-  'hangover': require('@/assets/images/posters/hangover.webp'),
-  'harry-potter-1': require('@/assets/images/posters/harry-potter-1.webp'),
-  'harry-potter-3': require('@/assets/images/posters/harry-potter-3.webp'),
-  'inception': require('@/assets/images/posters/inception.webp'),
-  'lion-king': require('@/assets/images/posters/lion-king.webp'),
-  'mr-robot': require('@/assets/images/posters/mr-robot.jpeg'),
-  'ouatih': require('@/assets/images/posters/ouatih.jpeg'),
-  'parasite': require('@/assets/images/posters/parasite.webp'),
-  'peacemaker': require('@/assets/images/posters/peacemaker.webp'),
-  'penguin': require('@/assets/images/posters/penguin.jpg'),
-  'pirates': require('@/assets/images/posters/pirates.webp'),
-  'rick-and-morty': require('@/assets/images/posters/rick-and-morty.webp'),
-  'riverdale': require('@/assets/images/posters/riverdale.webp'),
-  'sopranos': require('@/assets/images/posters/sopranos.webp'),
-  'the-office': require('@/assets/images/posters/the-office.webp'),
-  'vi-e-o-resto': require('@/assets/images/posters/vi-e-o-resto.webp'),
-}
 
 interface IProps {
   title: string;
-  content: string[];
+  url: string;
 }
 
-type DataType = typeof data;
 
-export default function ContentSlider({ title, content }: IProps) {
+export default function ContentSlider({ title, url }: IProps) {
   const router = useRouter();
 
+  const [content, setContent] = useState<IMovie[]>([])
 
-
+  useEffect(() => {
+    const loadData = async () => {
+          const res = await getData(url);
+          const resp = await res.json();
+    
+          setContent(resp.results)
+        }
+    
+        loadData()
+  })
 
   return (
     <View>
@@ -51,19 +41,14 @@ export default function ContentSlider({ title, content }: IProps) {
           className='px-4'
         >
           {content.map((item, index) => {
-            const imageSource = imagesMap[item];
-
-            const filmeSerie = data[item as keyof DataType];
-
-            if (!imageSource) return null;
 
             return (
               <Pressable key={index} onPress={() => router.push({
-                pathname: "/details",
-                params: { filmeSerie: JSON.stringify(filmeSerie), itemKey: item },
+                pathname: `${item.title ? "/detailsMovie" : "/detailsSerie"}`,
+                params: { id: item.id },
               })}>
                 <Image
-                  source={imageSource}
+                  source={{ uri: `${img_route}/w500${item.poster_path}` }}
                   style={{ width: 140, height: '100%', borderRadius: 8 }}
                   resizeMode="cover"
                 />
