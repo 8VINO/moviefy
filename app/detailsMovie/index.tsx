@@ -16,22 +16,36 @@ import { useEffect, useState } from "react";
 
 export default function DetailsMovie({idMovie}: {idMovie:number}) {
     const [content,setContent]=useState<any>(null);
+    const [trailerLink, setTrailerLink]=useState<any>(null);
     
     const router = useRouter();
     const toast = useToast();
 
     useEffect(()=>{
-      fetch(`${api_route}/movie/1311031`)
+      fetch(`${api_route}/movie/1311031?language=pt-BR`)
       .then(res=>res.json())
       .then(json=>setContent(json))
       .catch(err=>console.error(err))
     
-      
+    }
+     ,[])
+
+    useEffect(()=>{
+      fetch(`${api_route}/movie/1311031/videos?language=pt-BR`)
+      .then(res=>res.json())
+      .then(json=>{
+        const trailer = json.results.find(
+          (item:any)=>item.type==="Trailer"
+        );
+        setTrailerLink(trailer?.key ?? null)
+        
+      })
+      .catch(err=>console.error(err))
     }
      ,[])
 
     const handleOpenTrailer = () => {
-    Linking.openURL("https://www.youtube.com/watch?v=xIBiJ_SzJTA")
+    Linking.openURL(`https://www.youtube.com/watch?v=${trailerLink}`)
       .catch(err => console.error("Erro ao abrir link:", err));
   };
   
