@@ -1,9 +1,9 @@
-import { useRouter } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { Text, Image, ScrollView, View, Pressable } from 'react-native';
-import IMovie from '@/interfaces/Movie';
 import { img_route } from '@/routes/api/api.route';
 import getData from '@/routes/api/GET';
+import { IMovie } from '@/types/Movie';
+import { useRouter } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 
 
 interface IProps {
