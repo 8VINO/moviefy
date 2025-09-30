@@ -1,10 +1,10 @@
 import ContentSlider from '@/components/ContentSlider';
-import { View, Image, Text, ScrollView, Pressable } from 'react-native';
-import { useRouter } from 'expo-router';
 import { img_route } from '@/routes/api/api.route';
-import { useEffect, useState } from 'react';
 import getData from '@/routes/api/GET';
-import IMovie from '@/interfaces/Movie';
+import { IMovie } from '@/types/Movie';
+import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 
 export default function HomeScreen() {
   const router = useRouter();
