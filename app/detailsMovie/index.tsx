@@ -13,16 +13,21 @@ import { img_route } from "@/routes/api/api.route";
 import { api_route } from "@/routes/api/api.route";
 import { Image } from "@/components/ui/image";
 import { useEffect, useState } from "react";
-
+import { useContext } from "react";
+import { AuthContext } from '../../auth';
 
 export default function DetailsMovie() {
     const { id } = useLocalSearchParams();
+
     const [content,setContent]=useState<any>(null);
     const [trailerLink, setTrailerLink]=useState<any>(null)
     const [minimumAge,setMinimumAge]=useState<any>(null);
-    
+   
+
+    const authContext = useContext(AuthContext);
     const router = useRouter();
     const toast = useToast();
+   
 
     useEffect(()=>{
       
@@ -61,20 +66,44 @@ export default function DetailsMovie() {
     Linking.openURL(`https://www.youtube.com/watch?v=${trailerLink}`)
       .catch(err => console.error("Erro ao abrir link:", err));
   };
-  
+    
     const handleAddFavorite = () => {
-    toast.show({
-      id: "favorite-toast",
-      placement: "top", 
-      duration: 2000,   
-      render: () => (
-        <Toast className="mt-14">
-          <ToastDescription>
-            Conteúdo adicionado aos favoritos!
-          </ToastDescription>
-        </Toast>
-      ),
-    });
+      let message='';
+      fetch(`http://localhost:8000/user/favorites/movie/${authContext?.userId}/${id}
+        `,{
+          method:"POST",
+          headers:{
+            "Authorization":`Bearer ${authContext?.token}`
+          }
+        })
+        .then((res)=>{
+          if(res.status===200){
+            message='Conteúdo adicionado aos favoritos!';
+          }
+          else{
+            message='Não foi possivel adicionar aos favoritos';
+          }
+        })
+        .catch((err)=>{
+          console.error(err)
+          message='Erro ao adicionar aos favoritos';
+        })
+        .finally(()=>{
+          toast.show({
+          id: "favorite-toast",
+          placement: "top", 
+          duration: 2000,   
+          render: () => (
+            <Toast className="mt-14">
+              <ToastDescription>
+                {message}
+              </ToastDescription>
+            </Toast>
+          ),
+        });
+        })
+
+    
   }
   return (
       

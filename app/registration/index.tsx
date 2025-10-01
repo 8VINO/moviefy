@@ -42,7 +42,7 @@ export default function Registration() {
             .then((res) => {
                 switch (res.status) {
                     case 201:
-                        router.push("/login");
+                        router.replace("/login");
                         break
                     case 409:
                         setError("Este email já possui um cadastro");

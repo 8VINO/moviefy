@@ -1,88 +1,124 @@
-import { View, Text, StyleSheet,ImageBackground } from "react-native";
+import { View, Text, StyleSheet, ImageBackground } from "react-native";
 
 import { Input, InputField } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
 import { useRouter } from 'expo-router';
-import React,{ useState } from "react";
-const router = useRouter();
+import React, { useState } from "react";
+
+import { useContext } from "react";
+import { AuthContext } from "../../auth";
+
 export default function Login() {
-  const [email,setEmail]=useState("")
-  const [password,setPassword]= useState("")
-  const [error,setError]=useState("")
+  const authContext = useContext(AuthContext);
 
-  const handleSubmit =() =>{
-    
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    setError("E-mail inválido. Por favor, verifique o formato");
-    return;
+  if (!authContext) {
+    throw new Error("useAuth must be used within an AuthProvider");
   }
-  if (password.length < 6) {
-    setError("A senha deve ter pelo menos 6 caracteres");
-    return;
-  }
+  const { login } = authContext;
+  const router = useRouter();
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
 
-  setError("");
-  router.push("/(tabs)");
-  return;
+  const handleSubmit = () => {
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("E-mail inválido. Por favor, verifique o formato");
+      return;
+    }
+    if (password.length < 6) {
+      setError("A senha deve ter pelo menos 6 caracteres");
+      return;
+    }
+
+    fetch('http://localhost:8000/user/login', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
+
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          res.json().then(data => {
+            console.log("foi");
+            login(data.token).then(() => {
+              router.replace("/(tabs)");
+            });
+          });
+        }
+        if(res.status===401){
+          setError("Senha ou email incorreto.")
+        }
+      })
+
+    setError("");
+   
+    return;
   }
   return (
-<ImageBackground
-    source={require('assets/images/backgroundLogin.jpg')}
-    style={styles.background}
-    resizeMode="cover"
->
-    <View style={styles.container}>
-      <Text style={styles.title}>Entrar</Text>
+    <ImageBackground
+      source={require('assets/images/backgroundLogin.jpg')}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <View style={styles.container}>
+        <Text style={styles.title}>Entrar</Text>
 
-      <View style={styles.loginBox}>
-        <Input
-          variant="outline"
-          size="md"
-          style={styles.input}
+        <View style={styles.loginBox}>
+          <Input
+            variant="outline"
+            size="md"
+            style={styles.input}
           >
-          <InputField
-            placeholder="Email"
-            placeholderTextColor="#fff"
-            style={{ color: "#fff" }}
-            keyboardType="email-address"
-            value={email}
-            onChangeText={setEmail}
+            <InputField
+              placeholder="Email"
+              placeholderTextColor="#fff"
+              style={{ color: "#fff" }}
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
             />
-        </Input>
+          </Input>
 
-        <Input
-          variant="outline"
-          size="md"
-          style={styles.input}
+          <Input
+            variant="outline"
+            size="md"
+            style={styles.input}
           >
-          <InputField
-            placeholder="Senha"
-            placeholderTextColor="#fff"
-            style={{ color: "#fff" }}
-            secureTextEntry={true}
-            onChangeText={setPassword}
-            value={password}
-            
-            />
-        </Input>
-        {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
+            <InputField
+              placeholder="Senha"
+              placeholderTextColor="#fff"
+              style={{ color: "#fff" }}
+              secureTextEntry={true}
+              onChangeText={setPassword}
+              value={password}
 
-        <Button
-        variant="solid"
-        size="md"
-        action="primary"
-        onPress={handleSubmit}
-        
-        >
-          <ButtonText>Entrar</ButtonText>
-        </Button>
+            />
+          </Input>
+          {error ? <Text style={{ color: "red" }}>{error}</Text> : null}
+
+          <Button
+            variant="solid"
+            size="md"
+            action="primary"
+            className="mt-2"
+            onPress={handleSubmit}
+
+          >
+            <ButtonText>Entrar</ButtonText>
+          </Button>
+        </View>
+
+        <Text style={styles.forgot}>Esqueceu a senha?</Text>
+        <Text style={styles.signup}>Novo usuário? Cadastre-se já!</Text>
       </View>
-
-      <Text style={styles.forgot}>Esqueceu a senha?</Text>
-      <Text style={styles.signup}>Novo usuário? Cadastre-se já!</Text>
-    </View>
-</ImageBackground>
+    </ImageBackground>
   );
 }
 
@@ -108,21 +144,21 @@ const styles = StyleSheet.create({
   },
   input: {
     marginBottom: 20,
-    color:"#fff"
+    color: "#fff"
   },
   forgot: {
     color: "#fff",
     marginTop: 10,
     textDecorationLine: "underline",
-    marginBottom:10
+    marginBottom: 10
   },
   signup: {
     color: "#fff",
     marginTop: 10
   },
-  background:{
-    flex:1,
-    width:"100%",
-    height:"100%"
+  background: {
+    flex: 1,
+    width: "100%",
+    height: "100%"
   }
 });

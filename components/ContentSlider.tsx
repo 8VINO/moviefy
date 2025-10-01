@@ -26,7 +26,7 @@ export default function ContentSlider({ title, url }: IProps) {
         }
     
         loadData()
-  })
+  },[])
 
   return (
     <View>

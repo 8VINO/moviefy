@@ -10,11 +10,15 @@ import { Input, InputField } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { useRouter } from 'expo-router';
-
+import { useContext } from "react";
+import { AuthContext } from "../../auth";
 export default function PerfilScreen() {
     const router = useRouter();
-
-
+    const authContext = useContext(AuthContext);
+    if (!authContext) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+    const { logout } = authContext;
     const [imageUri, setImageUri] = useState<string | null>(null);
     const [nome, setNome] = useState<string>('Bryce Sardothien');
     const [email, setEmail] = useState<string>('sardothien.bryce@mail.com');
@@ -26,6 +30,7 @@ export default function PerfilScreen() {
         AsyncStorage.getItem('profileImage').then((uri) => {
             if (uri) setImageUri(uri);
         });
+
     }, []);
 
     const pickImage = async () => {
@@ -90,7 +95,7 @@ export default function PerfilScreen() {
                         <MaterialIcons name="edit" size={25} color="white" className='absolute bottom-0 right-0 m-1'/>
                     </Input>
 
-                    <Button variant="solid" size="md" action="primary" className='my-[25px]' onPress={()=>{router.push("/login");}}>
+                    <Button variant="solid" size="md" action="primary" className='my-[25px]' onPress={()=>{logout(),router.replace("/login")}}>
                         <ButtonText>Sair</ButtonText>
                     </Button>
                 </View>
