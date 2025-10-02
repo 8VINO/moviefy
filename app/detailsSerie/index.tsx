@@ -1,6 +1,6 @@
 import { Toast, ToastDescription, useToast } from "@/components/ui/toast";
 import { Button, ButtonText } from '@/components/ui/button';
-import { api_route, img_route } from "@/routes/api/api.route";
+import { api_route, img_route, main_route } from "@/routes/api/api.route";
 import { FontAwesome } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router/build/hooks";
 import { useEffect, useState } from "react";
@@ -8,14 +8,17 @@ import { Linking, ScrollView, Text, View, Image, Pressable } from "react-native"
 import { Select, SelectBackdrop, SelectContent, SelectDragIndicator, SelectDragIndicatorWrapper, SelectIcon, SelectInput, SelectItem, SelectPortal, SelectTrigger } from "@/components/ui/select";
 import { ChevronDownIcon } from "@/components/ui/icon";
 import { ISeries, ISeason } from "@/types/index";
+import { useContext } from "react";
+import { AuthContext } from '../../auth';
 
 import ContentSlider from "@/components/ContentSlider";
 
 export default function DetailsSerie() {
+  const authContext = useContext(AuthContext);
   const { id } = useLocalSearchParams();
   const [seasonId, setSeasonId] = useState<string>('1');
   const [seasonData, setSeasonData] = useState<ISeason>({} as ISeason);
-
+  const [minimumAge,setMinimumAge]=useState<any>(null);
   const [series, setSeries] = useState<ISeries>({} as ISeries);
   const [trailerLink, setTrailerLink] = useState<number>(1);
 
@@ -28,9 +31,28 @@ export default function DetailsSerie() {
       .then(json => setSeries(json))
       .catch(err => console.error(err))
 
-    fetch(`${api_route}/movie/${id}/videos?language=pt-BR`)
-      .then(res => res.json())
-      .catch(err => console.error(err))
+   //trailer
+      fetch(`${api_route}/tv/${id}/videos`)
+      .then(res=>res.json())
+      .then(json=>{
+        const trailer = json.results.find(
+          (item:any)=>item.type==="Trailer"
+        );
+        setTrailerLink(trailer?.key ?? null)
+        
+      })
+      .catch(err=>console.error(err))
+    //minimum age
+      fetch(`${api_route}/tv/${id}/content_ratings`)
+      .then(res=>res.json())
+      .then(json=>{
+        const releaseDateBR = json.results.find((item:any)=>item.iso_3166_1==="BR");
+        if(releaseDateBR?.rating){
+          
+          setMinimumAge(releaseDateBR?.rating)
+        }
+      })
+
   }, [])
 
   useEffect(() => {
@@ -46,18 +68,41 @@ export default function DetailsSerie() {
   };
 
   const handleAddFavorite = () => {
-    toast.show({
-      id: "favorite-toast",
-      placement: "top",
-      duration: 2000,
-      render: () => (
-        <Toast className="mt-14">
-          <ToastDescription>
-            Conteúdo adicionado aos favoritos!
-          </ToastDescription>
-        </Toast>
-      ),
-    });
+   let message='';
+         fetch(`${main_route}/user/favorites/series/${authContext?.userId}/${id}
+           `,{
+             method:"POST",
+             headers:{
+               "Authorization":`Bearer ${authContext?.token}`
+             }
+           })
+           .then((res)=>{
+             if(res.status===200){
+               message='Conteúdo adicionado aos favoritos!';
+             }
+             else{
+               message='Não foi possivel adicionar aos favoritos';
+             }
+           })
+           .catch((err)=>{
+             console.error(err)
+             message='Erro ao adicionar aos favoritos';
+           })
+           .finally(()=>{
+             toast.show({
+             id: "favorite-toast",
+             placement: "top", 
+             duration: 2000,   
+             render: () => (
+               <Toast className="mt-14">
+                 <ToastDescription>
+                   {message}
+                 </ToastDescription>
+               </Toast>
+             ),
+           });
+           })
+   
   }
 
   return (
@@ -89,8 +134,10 @@ export default function DetailsSerie() {
           <Text className="text-gray-400 mr-2" >{series.first_air_date?.substring(0, 4)}</Text>
 
           <View className="bg-gray-700 px-2 py-0.5 rounded-full mr-2">
-            <Text className="text-white text-xs ">A16</Text>
+              <Text className="text-white text-xs ">A{minimumAge}</Text>
           </View>
+            
+
 
           <View className="flex-row items-center">
             <FontAwesome name="star" size={14} color="yellow" />
