@@ -26,7 +26,7 @@ export default function HomeScreen() {
     <ScrollView>
 
       <Pressable onPress={() => router.push({
-        pathname: `${mostViewedMovies[0].title ? "/detailsMovie": "/detailsSerie"}`,
+        pathname: `${mostViewedMovies[0].title ? "/detailsMovie/index": "/detailsSerie/index"}`,
         params: { id: mostViewedMovies[0].id },
       })}>
         <View className="w-full aspect-[2/3] mb-20 relative">

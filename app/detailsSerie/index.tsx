@@ -18,41 +18,53 @@ export default function DetailsSerie() {
   const { id } = useLocalSearchParams();
   const [seasonId, setSeasonId] = useState<string>('1');
   const [seasonData, setSeasonData] = useState<ISeason>({} as ISeason);
-  const [minimumAge,setMinimumAge]=useState<any>(null);
+  const [minimumAge, setMinimumAge] = useState<any>(null);
   const [series, setSeries] = useState<ISeries>({} as ISeries);
   const [trailerLink, setTrailerLink] = useState<number>(1);
 
   const router = useRouter();
   const toast = useToast();
 
+
   useEffect(() => {
     fetch(`${api_route}/tv/${id}?language=pt-BR`)
       .then(res => res.json())
+      .then(json => {
+        // se json estiver vazio ou overview vazio, tenta sem language
+        if (!json || Object.keys(json).length === 0 || !json.overview) {
+          return fetch(`${api_route}/tv/${id}`)
+            .then(res2 => res2.json());
+        }
+        return json;
+      })
       .then(json => setSeries(json))
-      .catch(err => console.error(err))
+      .catch(err => {
+        console.error("Erro ao buscar detalhes de series:", err);
+      });
 
-   //trailer
-      fetch(`${api_route}/tv/${id}/videos`)
-      .then(res=>res.json())
-      .then(json=>{
+    //trailer
+    fetch(`${api_route}/tv/${id}/videos`)
+      .then(res => res.json())
+      .then(json => {
         const trailer = json.results.find(
-          (item:any)=>item.type==="Trailer"
+          (item: any) => item.type === "Trailer"
         );
         setTrailerLink(trailer?.key ?? null)
-        
+
       })
-      .catch(err=>console.error(err))
+      .catch(err => console.error(err))
     //minimum age
-      fetch(`${api_route}/tv/${id}/content_ratings`)
-      .then(res=>res.json())
-      .then(json=>{
-        const releaseDateBR = json.results.find((item:any)=>item.iso_3166_1==="BR");
-        if(releaseDateBR?.rating){
-          
-          setMinimumAge(releaseDateBR?.rating)
+    fetch(`${api_route}/tv/${id}/content_ratings`)
+      .then(res => res.json())
+      .then(json => {
+        const releaseDateBR = json.results.find((item: any) => item.iso_3166_1 === "BR");
+        if (releaseDateBR?.rating) {
+          const latest = releaseDateBR.rating
+          setMinimumAge(latest || 18)
+        } else {
+          setMinimumAge(18)
         }
       })
-
   }, [])
 
   useEffect(() => {
@@ -68,47 +80,47 @@ export default function DetailsSerie() {
   };
 
   const handleAddFavorite = () => {
-   let message='';
-         fetch(`${main_route}/user/favorites/series/${authContext?.userId}/${id}
-           `,{
-             method:"POST",
-             headers:{
-               "Authorization":`Bearer ${authContext?.token}`
-             }
-           })
-           .then((res)=>{
-             if(res.status===200){
-               message='Conteúdo adicionado aos favoritos!';
-             }
-             else{
-               message='Não foi possivel adicionar aos favoritos';
-             }
-           })
-           .catch((err)=>{
-             console.error(err)
-             message='Erro ao adicionar aos favoritos';
-           })
-           .finally(()=>{
-             toast.show({
-             id: "favorite-toast",
-             placement: "top", 
-             duration: 2000,   
-             render: () => (
-               <Toast className="mt-14">
-                 <ToastDescription>
-                   {message}
-                 </ToastDescription>
-               </Toast>
-             ),
-           });
-           })
-   
+    let message = '';
+    fetch(`${main_route}/user/favorites/series/${authContext?.userId}/${id}
+           `, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${authContext?.token}`
+      }
+    })
+      .then((res) => {
+        if (res.status === 200) {
+          message = 'Conteúdo adicionado aos favoritos!';
+        }
+        else {
+          message = 'Não foi possivel adicionar aos favoritos';
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+        message = 'Erro ao adicionar aos favoritos';
+      })
+      .finally(() => {
+        toast.show({
+          id: "favorite-toast",
+          placement: "top",
+          duration: 2000,
+          render: () => (
+            <Toast className="mt-14">
+              <ToastDescription>
+                {message}
+              </ToastDescription>
+            </Toast>
+          ),
+        });
+      })
+
   }
 
   return (
     <ScrollView className="flex-1">
       <View className="h-64" >
- 
+
         <Pressable onPress={() => router.back()} className="bg-black/25"
           style={{ position: "absolute", top: 25, left: 20, zIndex: 10, backgroundColor: 'rgb(0, 0, 0, 0.3)' }}
         >
@@ -134,9 +146,9 @@ export default function DetailsSerie() {
           <Text className="text-gray-400 mr-2" >{series.first_air_date?.substring(0, 4)}</Text>
 
           <View className="bg-gray-700 px-2 py-0.5 rounded-full mr-2">
-              <Text className="text-white text-xs ">A{minimumAge}</Text>
+            <Text className="text-white text-xs ">A{minimumAge}</Text>
           </View>
-            
+
 
 
           <View className="flex-row items-center">
