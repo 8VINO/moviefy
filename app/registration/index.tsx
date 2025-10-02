@@ -4,6 +4,7 @@ import { Input, InputField } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
 import { useRouter } from 'expo-router';
 import React, { useState } from "react";
+import { main_route } from "@/routes/api/api.route";
 const router = useRouter();
 
 export default function Registration() {
@@ -28,7 +29,7 @@ export default function Registration() {
             return;
         }
 
-        fetch('http://localhost:8000/user/register', {
+        fetch(`${main_route}/user/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

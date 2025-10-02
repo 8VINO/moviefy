@@ -2,11 +2,12 @@ import { View, Text, StyleSheet, ImageBackground } from "react-native";
 
 import { Input, InputField } from '@/components/ui/input';
 import { Button, ButtonText } from '@/components/ui/button';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React, { useState } from "react";
 
 import { useContext } from "react";
 import { AuthContext } from "../../auth";
+import { main_route } from "@/routes/api/api.route";
 
 export default function Login() {
   const authContext = useContext(AuthContext);
@@ -32,7 +33,7 @@ export default function Login() {
       return;
     }
 
-    fetch('http://localhost:8000/user/login', {
+    fetch(`${main_route}/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -116,7 +117,7 @@ export default function Login() {
         </View>
 
         <Text style={styles.forgot}>Esqueceu a senha?</Text>
-        <Text style={styles.signup}>Novo usuário? Cadastre-se já!</Text>
+        <Text style={styles.signup}>Novo usuário? <Link href='/registration'>Cadastre-se já!</Link></Text>
       </View>
     </ImageBackground>
   );
