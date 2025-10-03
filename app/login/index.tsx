@@ -116,8 +116,8 @@ export default function Login() {
           </Button>
         </View>
 
-        <Text style={styles.forgot}>Esqueceu a senha?</Text>
-        <Text style={styles.signup}>Novo usuário? <Link href='/registration'>Cadastre-se já!</Link></Text>
+        
+        <Text style={styles.signup}>Novo usuário? <Link href='/registration' className="underline mt-2">Cadastre-se já!</Link></Text>
       </View>
     </ImageBackground>
   );

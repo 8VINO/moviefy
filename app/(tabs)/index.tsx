@@ -1,14 +1,15 @@
 import ContentSlider from '@/components/ContentSlider';
 import { img_route } from '@/routes/api/api.route';
 import getData from '@/routes/api/GET';
-import { IMovie } from '@/types/Movie';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import IContent from '@/types/Content';
 
 export default function HomeScreen() {
   const router = useRouter();
-  const [mostViewedMovies, setMostViewedMovies] = useState<IMovie[]>([]);
+  const [mostViewedMovies, setMostViewedMovies] = useState<IContent[]>([]);
 
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export default function HomeScreen() {
     <ScrollView>
 
       <Pressable onPress={() => router.push({
-        pathname: `${mostViewedMovies[0].title ? "/detailsMovie/index": "/detailsSerie/index"}`,
+        pathname: `${mostViewedMovies[0].title ? "/detailsMovie": "/detailsSerie"}`,
         params: { id: mostViewedMovies[0].id },
       })}>
         <View className="w-full aspect-[2/3] mb-20 relative">
@@ -39,15 +40,20 @@ export default function HomeScreen() {
           )}
 
 
-          <View className="absolute bottom-0 left-0 right-0 w-full h-[50px] bg-black/95" />
-          <View className="absolute bottom-0 left-0 right-0 w-full h-[100px] bg-black/45" />
-          <View className="absolute bottom-0 left-0 right-0 w-full h-[150px] bg-black/35" />
-          <View className="absolute bottom-0 left-0 right-0 w-full h-[250px] bg-black/25" />
-          <View className="absolute bottom-0 left-0 right-0 w-full h-[350px] bg-black/25" />
-          <View className="absolute bottom-0 left-0 right-0 w-full h-full bg-black/25" />
+          <LinearGradient
+              colors={["black", "rgba(0,0,0,0.4)", "rgba(0,0,0,0.2)", "black"]}
+              locations={[0.05, 0.3, 0.7, 1]}
+              style={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                bottom: 0,
+                top: 0,
+              }}
+            />
 
           <Text className="absolute bottom-4 left-4 text-white font-bold text-2xl z-20">
-            {mostViewedMovies[0]?.title}
+            {mostViewedMovies[0]?.title || mostViewedMovies[0]?.name}
           </Text>
         </View>
       </Pressable>

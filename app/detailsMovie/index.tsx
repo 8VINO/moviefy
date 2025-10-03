@@ -10,6 +10,7 @@ import { useContext } from "react";
 import { AuthContext } from '../../auth';
 
 import ContentSlider from "@/components/ContentSlider";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function DetailsSerie() {
   const authContext = useContext(AuthContext);
@@ -138,6 +139,18 @@ export default function DetailsSerie() {
           accessibilityLabel="Pôster do filme"
           alt=""
         />
+
+        <LinearGradient
+              colors={["black", "rgba(0,0,0,0.4)", "rgba(0,0,0,0.2)", "black"]}
+              locations={[0.05, 0.3, 0.7, 1]}
+              style={{
+                position: "absolute",
+                left: 0,
+                right: 0,
+                bottom: 0,
+                top: 0,
+              }}
+            />
       </View>
 
       <View className="p-4">
