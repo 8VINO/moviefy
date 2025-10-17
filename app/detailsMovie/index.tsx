@@ -132,8 +132,16 @@ export default function DetailsSerie() {
           </View>
         </Pressable>
 
+        <Pressable onPress={() => router.navigate("/")} className="bg-black/25"
+          style={{ position: "absolute", top: 30, right: 20, zIndex: 10, backgroundColor: 'rgb(0, 0, 0, 0.3)' }}
+        >
+          <View className="bg-black/25 p-3 rounded-full">
+            <FontAwesome name="home" size={15} color="white" />
+          </View>
+        </Pressable>
+
         <Image
-          source={{ uri: `${img_route}/original${movie?.poster_path}` }}
+          source={{ uri: `${img_route}/w780${movie?.backdrop_path}` }}
           className="w-full h-full"
           resizeMode="cover"
           accessibilityLabel="Pôster do filme"
