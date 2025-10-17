@@ -47,7 +47,6 @@ export default function Login() {
       .then((res) => {
         if (res.status === 200) {
           res.json().then(data => {
-            console.log("foi");
             login(data.token).then(() => {
               router.replace("/(tabs)");
             });
